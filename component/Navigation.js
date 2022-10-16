@@ -1,3 +1,5 @@
+import {useState} from 'react'
+
 import Image from 'next/image'
 
 import { Stack, Link, Box } from "@mui/material";
@@ -49,6 +51,15 @@ const Navigation = () => {
 
 
 export const MobileNavigation = () => {
+
+      const [menuOpen, setMenuOpen] = useState(false)
+      
+      const onClickHandler = () => {
+            setMenuOpen(!menuOpen)
+            alert(menuOpen)
+            
+      }
+      
       return (
 
             <Box padding="2em 5vw 0" sx={{display:"none",
@@ -61,11 +72,11 @@ export const MobileNavigation = () => {
                               <Image src={logo } />
                         </Link>
 
-                        <Image src={ hamburger } />
+                        <Image src={ hamburger } onClick={onClickHandler} />
 
                   </Stack>
 
-                  <Stack sx={{ backgroundColor: 'hsl(257, 27%, 26%)', borderRadius: '10px', marginTop: "1em", alignItems:'center', display:"absolute" }}>
+                  <Stack sx={{ backgroundColor: 'hsl(257, 27%, 26%)', borderRadius: '10px', marginTop: "1em", alignItems:'center',  display:'none' }}>
                         
                         <StyledHeaderLink>Features</StyledHeaderLink>
                         <StyledHeaderLink>Pricing</StyledHeaderLink>

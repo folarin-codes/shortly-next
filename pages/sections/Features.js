@@ -1,6 +1,6 @@
-import { useState, useRef } from 'react'
+import { useState, useRef , useEffect} from 'react'
 
-import { Stack, Box } from '@mui/material'
+import { Stack, Box, Typography } from '@mui/material'
 import styled from '@emotion/styled';
 
 import bgm from '../../images/bgsm.svg'
@@ -13,32 +13,29 @@ import { RegularButton } from '../../component/Button';
 
 const StyledStack = styled(Stack)(({ theme }) => ({
       flexDirection: "row",
-      justifyContent:"space-between",
-      
-      [theme.breakpoints.down('md')]:{
-            flexDirection: 'column',
-            gap:"1em"
-      }
-      
-
-}))
-
-const StyledBox = styled(Box)(({ theme }) => ({
+      justifyContent: "space-between",
       backgroundImage: `url(${bgd.src})`,
-      margin: '0em 5vw',
       padding:"2em 3em",
       backgroundColor: "hsl(257, 27%, 26%)",
       borderRadius: '10px',
       position: 'relative',
-      top:"3em",
+      top: "3em",
       
-      [theme.breakpoints.down('md')]: {
+      [theme.breakpoints.down('md')]:{
+            flexDirection: 'column',
+            gap: "1em",
             backgroundImage: `url(${bgm.src})`,
             top:"5em"
-      
       }
 
+}))
+
+const StyledBox = styled(Box)(({ theme }) => ({
       
+      margin: '0em 5vw',  
+      [theme.breakpoints.down('md')]: {  
+            
+      }      
 }))
 
 const StyledInput = styled('input')(({ theme }) => ({
@@ -56,35 +53,59 @@ const StyledInput = styled('input')(({ theme }) => ({
 
 }))
 
+const StyledLinkContainer = styled(Stack)(({ theme }) => ({
+      flexDirection: 'row',
+      justifyContent: "space-between",
+      marginBottom: "1em",
+      backgroundColor: "white",
+      padding: "1em 1em",
+      alignItems: "center",
+      borderRadius:"10px",
+      [theme.breakpoints.down('md')]: {
+            flexDirection:'column'
+      }
+      
+}))
+
 const linksArr = [];
+let localStorageArray = [];
 
 const Feature = () => {
+
+      useEffect(() => {
+            localStorageArray = JSON.parse(localStorage.getItem("links array"))
+
+            // if (shortenedLink || localStorageArray) localStorageArray = JSON.parse(localStorage.getItem("links Array"));
+      
+      })
+
+
 
       const [link, setLink] = useState('')
       const [shortenedLink, setShortenedLink] = useState('')
 
       const inputRef = useRef(null)
     
-      
-  
-
-      // console.log(link)
 
       const shortenLink = async () => {
-            
-            let data = await fetch(`https://api.shrtco.de/v2/shorten?url=${link}`);
 
-            let result = await data.json()
-         
+            try {
+                  let data = await fetch(`https://api.shrtco.de/v2/shorten?url=${link}`);
 
-            let { short_link, full_short_link, short_link2, full_short_link2 } = result.result;
+                  let result = await data.json()
+               
+      
+                  let { short_link, full_short_link, short_link2, full_short_link2 } = result.result;
+      
+                  setShortenedLink(short_link || full_short_link || short_link2 || full_short_link2)
+                  
+                  console.log(shortenedLink)
+                  
+            }
 
-            setShortenedLink(short_link || full_short_link || short_link2 || full_short_link2)
-            
-            console.log(shortenedLink)
-                 
-            
-
+            catch (error) {
+                  alert(error)
+            }
 
       }
 
@@ -94,15 +115,20 @@ const Feature = () => {
             if (shortenedLink) {
                   
                   console.log(linksArr)
-                  linksArr.push(shortenedLink)
+                  linksArr.push({ link, shortenedLink})
                   
                   localStorage.setItem("links Array" , JSON.stringify(linksArr))
 
 
             }
 
+      }
+
+      if (typeof window !== 'undefined') {
 
             
+      if (shortenedLink || localStorageArray) localStorageArray = JSON.parse(localStorage.getItem("links Array"));
+      
       }
 
       const onClickHandler = () => {
@@ -111,12 +137,11 @@ const Feature = () => {
 
             shortenLink()
             storeLinkToLocalStorage()
-            
+                 
       }
 
-
-
       return (
+           
             <StyledBox>
                   
                   <StyledStack>
@@ -128,9 +153,28 @@ const Feature = () => {
 
                   </StyledStack>
 
-            </StyledBox>
+                  <Box position={'relative'} top='5em'>      
+                  {
+                      localStorageArray  &&   localStorageArray.map(({link , shortenedLink }) => {
+                              return (
+                                    <StyledLinkContainer>
+                                          <Typography>
+                                                { link }
+                                          </Typography>
 
+                                          <Stack sx={{flexDirection:"row", gap:'1em',alignItems:"center", [theme.breakpoints.down('md')]:{flexDirection:'column'}}}>
+                                                <Typography color={'cyan'} fontWeight='bold'>{shortenedLink}</Typography>
 
+                                                <RegularButton>Copy</RegularButton>
+                                          </Stack>
+
+                                    </StyledLinkContainer>
+                              )
+                        })
+                        }
+                        </Box>
+
+                  </StyledBox>
             
       )
 }
