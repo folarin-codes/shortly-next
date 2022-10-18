@@ -20,6 +20,7 @@ const StyledStack = styled(Stack)(({ theme }) => ({
       borderRadius: '10px',
       position: 'relative',
       top: "3em",
+      gap:"1em",
       
       [theme.breakpoints.down('md')]:{
             flexDirection: 'column',
@@ -60,7 +61,8 @@ const StyledLinkContainer = styled(Stack)(({ theme }) => ({
       backgroundColor: "white",
       padding: "1em 1em",
       alignItems: "center",
-      borderRadius:"10px",
+      borderRadius: "10px",
+      // position:"relative",
       [theme.breakpoints.down('md')]: {
             flexDirection:'column'
       }
@@ -69,23 +71,40 @@ const StyledLinkContainer = styled(Stack)(({ theme }) => ({
 
 const linksArr = [];
 let localStorageArray = [];
+let toggle = false
+
 
 const Feature = () => {
 
-      useEffect(() => {
-            localStorageArray = JSON.parse(localStorage.getItem("links array"))
-
-            // if (shortenedLink || localStorageArray) localStorageArray = JSON.parse(localStorage.getItem("links Array"));
       
-      })
-
-
-
       const [link, setLink] = useState('')
       const [shortenedLink, setShortenedLink] = useState('')
-
+      const [id , setId] = useState(0)
       const inputRef = useRef(null)
-    
+      const linkContainerRef = useRef('');
+      const textRef = useRef('')
+
+
+
+
+      if (typeof window !== 'undefined') {         
+
+
+            localStorageArray = JSON.parse(localStorage.getItem("links Array"))
+      }
+
+
+
+      useEffect(() => {
+            localStorageArray = JSON.parse(localStorage.getItem("links Array"));
+            
+            if (localStorageArray) {
+                  
+            linksArr = localStorageArray;
+                  
+            }
+
+             }, [toggle, linksArr])
 
       const shortenLink = async () => {
 
@@ -93,13 +112,16 @@ const Feature = () => {
                   let data = await fetch(`https://api.shrtco.de/v2/shorten?url=${link}`);
 
                   let result = await data.json()
+
+                  console.log(result)
                
       
                   let { short_link, full_short_link, short_link2, full_short_link2 } = result.result;
-      
-                  setShortenedLink(short_link || full_short_link || short_link2 || full_short_link2)
+
                   
-                  console.log(shortenedLink)
+                 let shortLink = short_link || full_short_link || short_link2 || full_short_link2
+                  
+                  return shortLink;
                   
             }
 
@@ -109,35 +131,60 @@ const Feature = () => {
 
       }
 
-      const storeLinkToLocalStorage = () => {
-           
+  
 
-            if (shortenedLink) {
-                  
-                  console.log(linksArr)
-                  linksArr.push({ link, shortenedLink})
-                  
-                  localStorage.setItem("links Array" , JSON.stringify(linksArr))
+      const storeLinkToLocalStorage = async () => {
+            
+            let result = await shortenLink()
+            
+            // console.log(result)
 
+            if (result) {
+
+                  setShortenedLink(result)
+                  setId(id + 1)
+
+                  linksArr.push({ link, result , id})
+              
+                  localStorage.setItem("links Array", JSON.stringify(linksArr))
+                  
 
             }
 
       }
 
-      if (typeof window !== 'undefined') {
+      const copyShortLinkToClipBoard = () => {
 
             
-      if (shortenedLink || localStorageArray) localStorageArray = JSON.parse(localStorage.getItem("links Array"));
-      
+            console.log(textRef.current.innerText);  
       }
 
-      const onClickHandler = () => {
+
+      const onDeleteHandler = () => {
+
+            let index = linkContainerRef.current;
+
+            console.log(index)
+
+            // linksArr.splice(index, 1);
+            
+            // localStorage.setItem("links Array", JSON.stringify(linksArr));
+
+
+
+            
+      }
+
+
+      const onClickHandler =  () => {
 
             inputRef.current.value = ''
 
             shortenLink()
             storeLinkToLocalStorage()
-                 
+
+          
+
       }
 
       return (
@@ -155,17 +202,22 @@ const Feature = () => {
 
                   <Box position={'relative'} top='5em'>      
                   {
-                      localStorageArray  &&   localStorageArray.map(({link , shortenedLink }) => {
+                      localStorageArray  &&   localStorageArray.map(({link , result,id}) => {
                               return (
-                                    <StyledLinkContainer>
+                                    <StyledLinkContainer key={id} ref={linkContainerRef}>
+                                          
                                           <Typography>
                                                 { link }
                                           </Typography>
 
-                                          <Stack sx={{flexDirection:"row", gap:'1em',alignItems:"center", [theme.breakpoints.down('md')]:{flexDirection:'column'}}}>
-                                                <Typography color={'cyan'} fontWeight='bold'>{shortenedLink}</Typography>
+                                          <Stack sx={{ flexDirection: "row", gap: '1em', alignItems: "center", [theme.breakpoints.down('md')]: { flexDirection: 'column' } }}>
+                                                
+                                                <Typography ref={textRef}   color={'cyan'} fontWeight='bold'>{ result}</Typography>
 
-                                                <RegularButton>Copy</RegularButton>
+                                                <RegularButton onClick={copyShortLinkToClipBoard}>Copy</RegularButton>
+                                                
+                                                
+                                                <RegularButton sx={{backgroundColor:'tomato !important'}} onClick={onDeleteHandler}>Delete !</RegularButton>
                                           </Stack>
 
                                     </StyledLinkContainer>

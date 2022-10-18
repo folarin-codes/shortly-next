@@ -2,7 +2,10 @@ import {useState} from 'react'
 
 import Image from 'next/image'
 
-import { Stack, Link, Box } from "@mui/material";
+import { Stack, Link, Box} from "@mui/material";
+
+import Divider from '@mui/material/Divider';
+
 import { PrimaryButton } from "./Button";
 
 import styled from "@emotion/styled";
@@ -17,7 +20,8 @@ import hamburger from '../images/menu-line.svg'
 
 
 const MobileLink = styled(Link)({
-      color: "white",
+
+      color: "white !important",
       fontSize: '18px', 
       fontWeight:'500'
        
@@ -35,7 +39,8 @@ const Navigation = () => {
                         <StyledHeaderLink underline="none" href="/" sx={{fontSize:'30px !important', fontWeight:'700 !important'}}>Shortly</StyledHeaderLink>
                         <StyledHeaderLink  underline="hover">Features</StyledHeaderLink>
                         <StyledHeaderLink  underline="hover">Pricing</StyledHeaderLink>
-                        <StyledHeaderLink  underline="hover">Resources</StyledHeaderLink>
+                        <StyledHeaderLink underline="hover">Resources</StyledHeaderLink>
+                        
 
                   </Stack>
 
@@ -56,13 +61,12 @@ export const MobileNavigation = () => {
       
       const onClickHandler = () => {
             setMenuOpen(!menuOpen)
-            alert(menuOpen)
-            
+           
       }
       
       return (
 
-            <Box padding="2em 5vw 0" sx={{display:"none",
+            <Box padding="2em 5vw 0" sx={{display :'none',
                   [theme.breakpoints.down('md')]: {
                   display:'block'
             }}}>
@@ -76,13 +80,15 @@ export const MobileNavigation = () => {
 
                   </Stack>
 
-                  <Stack sx={{ backgroundColor: 'hsl(257, 27%, 26%)', borderRadius: '10px', marginTop: "1em", alignItems:'center',  display:'none' }}>
+                  <Stack sx={{backgroundColor: 'hsl(257, 27%, 26%)', borderRadius: '10px', alignItems:'center',  display: menuOpen ? 'flex' : 'none', position:'absolute', width:'80vw', zIndex:1, margin:"1em auto 0", gap:"2em", paddingY:"2em"}}>
                         
-                        <StyledHeaderLink>Features</StyledHeaderLink>
-                        <StyledHeaderLink>Pricing</StyledHeaderLink>
-                        <StyledHeaderLink>Resources</StyledHeaderLink>
+                        <MobileLink>Features</MobileLink>
+                        <MobileLink>Pricing</MobileLink>
+                        <MobileLink>Resources</MobileLink>
+
+                        <Divider sx={{color:'red'}}/>
                         
-                        <StyledHeaderLink>Login</StyledHeaderLink>
+                        <MobileLink>Login</MobileLink>
                         <PrimaryButton>Sign Up</PrimaryButton>
 
                   </Stack>

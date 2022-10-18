@@ -17,7 +17,8 @@ const StyledHeader = styled(Stack)(({ theme }) => ({
       overflow: 'hidden',
 
       [theme.breakpoints.down('md')]: {
-            flexDirection:"column-reverse"
+            flexDirection: "column-reverse",
+            gap:"2em"
             
       }
 
