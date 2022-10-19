@@ -79,10 +79,8 @@ const Feature = () => {
       
       const [link, setLink] = useState('')
       const [shortenedLink, setShortenedLink] = useState('')
-      const [id , setId] = useState(0)
       const inputRef = useRef(null)
-      const linkContainerRef = useRef('');
-      const textRef = useRef('')
+     
 
 
 
@@ -137,14 +135,13 @@ const Feature = () => {
             
             let result = await shortenLink()
             
-            // console.log(result)
 
             if (result) {
 
                   setShortenedLink(result)
-                  setId(id + 1)
+              
 
-                  linksArr.push({ link, result , id})
+                  linksArr.push({ link, result , id:linksArr.length })
               
                   localStorage.setItem("links Array", JSON.stringify(linksArr))
                   
@@ -153,28 +150,38 @@ const Feature = () => {
 
       }
 
-      const copyShortLinkToClipBoard = () => {
+      const copyShortLinkToClipBoard = (event) => {
+
+            let copiedLink = event.target.previousSibling.innerText;
+            
+            navigator.clipboard.writeText(copiedLink)
 
             
-            console.log(textRef.current.innerText);  
       }
 
 
-      const onDeleteHandler = () => {
 
-            let index = linkContainerRef.current;
+      const onDeleteHandler = (event) => {
+
+
+            // console.log(event.target.parentNode.parentNode.firstChild.textContent)
+
+            let link = event.target.parentNode.parentNode.firstChild.textContent
+            
+            let index = localStorageArray.findIndex(items => items.link == link)
 
             console.log(index)
 
-            // linksArr.splice(index, 1);
+            let newArray = localStorageArray.filter(item => item.id != index)
             
-            // localStorage.setItem("links Array", JSON.stringify(linksArr));
+            localStorage.setItem("links Array", JSON.stringify(newArray))
+
+            setShortenedLink('')
 
 
-
-            
+           
+        
       }
-
 
       const onClickHandler =  () => {
 
@@ -182,9 +189,6 @@ const Feature = () => {
 
             shortenLink()
             storeLinkToLocalStorage()
-
-          
-
       }
 
       return (
@@ -204,7 +208,7 @@ const Feature = () => {
                   {
                       localStorageArray  &&   localStorageArray.map(({link , result,id}) => {
                               return (
-                                    <StyledLinkContainer key={id} ref={linkContainerRef}>
+                                    <StyledLinkContainer key={id} >
                                           
                                           <Typography>
                                                 { link }
@@ -212,9 +216,9 @@ const Feature = () => {
 
                                           <Stack sx={{ flexDirection: "row", gap: '1em', alignItems: "center", [theme.breakpoints.down('md')]: { flexDirection: 'column' } }}>
                                                 
-                                                <Typography ref={textRef}   color={'cyan'} fontWeight='bold'>{ result}</Typography>
+                                                <Typography color={'cyan'} fontWeight='bold'>{ result}</Typography>
 
-                                                <RegularButton onClick={copyShortLinkToClipBoard}>Copy</RegularButton>
+                                                <RegularButton onClick={event => copyShortLinkToClipBoard(event)}>Copy</RegularButton>
                                                 
                                                 
                                                 <RegularButton sx={{backgroundColor:'tomato !important'}} onClick={onDeleteHandler}>Delete !</RegularButton>
