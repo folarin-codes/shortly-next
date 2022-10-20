@@ -24,7 +24,7 @@ const StyledStack = styled(Stack)(({ theme }) => ({
       
       [theme.breakpoints.down('md')]:{
             flexDirection: 'column',
-            gap: "1em",
+            gap: "2em",
             backgroundImage: `url(${bgm.src})`,
             top:"5em"
       }
@@ -46,6 +46,12 @@ const StyledInput = styled('input')(({ theme }) => ({
       width: "70vw",
       paddingLeft: "1em",
       borderRadius: "5px",
+
+      '&::placeholder': {
+
+            color: 'inherit'
+            
+      },
       
       [theme.breakpoints.down('md')]: {
             height: "3em",
@@ -71,7 +77,7 @@ const StyledLinkContainer = styled(Stack)(({ theme }) => ({
 
 const linksArr = [];
 let localStorageArray = [];
-let toggle = false
+let toggle = false;
 
 
 const Feature = () => {
@@ -80,6 +86,8 @@ const Feature = () => {
       const [link, setLink] = useState('')
       const [shortenedLink, setShortenedLink] = useState('')
       const inputRef = useRef(null)
+      const [emptyLink, setEmptyLink] = useState(false)
+      const [copyButtonText , setCopyButtonText] = useState('Copy')
      
 
 
@@ -107,6 +115,7 @@ const Feature = () => {
       const shortenLink = async () => {
 
             try {
+
                   let data = await fetch(`https://api.shrtco.de/v2/shorten?url=${link}`);
 
                   let result = await data.json()
@@ -128,8 +137,6 @@ const Feature = () => {
             }
 
       }
-
-  
 
       const storeLinkToLocalStorage = async () => {
             
@@ -153,13 +160,30 @@ const Feature = () => {
       const copyShortLinkToClipBoard = (event) => {
 
             let copiedLink = event.target.previousSibling.innerText;
+           
             
             navigator.clipboard.writeText(copiedLink)
 
+            // if (event.target) {
+                  
+            //       setCopyButtonText('Copied!')
+                  
+            // }
+
+          
+            event.target.innerText = 'Copied!'
+            event.target.style.backgroundColor = 'hsl(257, 27%, 26%)'
+
+            setTimeout(() => {
+                  
+            event.target.innerText = 'Copy'
+            event.target.style.backgroundColor = 'hsl(180, 66%, 49%)'
+
+                  
+            }, 5000)
+
             
       }
-
-
 
       const onDeleteHandler = (event) => {
 
@@ -177,18 +201,32 @@ const Feature = () => {
             localStorage.setItem("links Array", JSON.stringify(newArray))
 
             setShortenedLink('')
-
-
-           
-        
       }
 
       const onClickHandler =  () => {
 
             inputRef.current.value = ''
 
-            shortenLink()
-            storeLinkToLocalStorage()
+            if (link) {
+                  setEmptyLink(false)
+
+                  alert(emptyLink)
+                  
+                  shortenLink()
+
+                  storeLinkToLocalStorage()
+
+                  setLink('')   
+
+            }
+            else {
+                  
+                  setEmptyLink(true)
+
+                  setTimeout(() => { setEmptyLink(false) }, 10000)
+
+                  
+            }
       }
 
       return (
@@ -196,7 +234,12 @@ const Feature = () => {
             <StyledBox>
                   
                   <StyledStack>
-                        <StyledInput type={'text'} placeholder='Shorten a link address' onChange={(e) => { setLink(e.currentTarget.value); }} ref={inputRef}  />
+                        <StyledInput type={'text'} placeholder='Shorten a link address' onChange={(e) => { setLink(e.currentTarget.value); }} ref={inputRef}
+                        style={{border:emptyLink ? '1px solid red' : 'none' , color:emptyLink ? 'red' : 'initial'}}
+
+                        />
+
+                        <Typography sx={{position:'absolute', top:"6em", color:'red', fontWeight:"100", fontStyle:'italic', display:emptyLink ? 'block' : 'none', [theme.breakpoints.down('md')]:{top:'4.5em'}}}>Please add a link</Typography>
 
                         <RegularButton onClick={onClickHandler}>Shorten it!</RegularButton>
                         
@@ -218,10 +261,10 @@ const Feature = () => {
                                                 
                                                 <Typography color={'cyan'} fontWeight='bold'>{ result}</Typography>
 
-                                                <RegularButton onClick={event => copyShortLinkToClipBoard(event)}>Copy</RegularButton>
+                                                <RegularButton onClick={event => copyShortLinkToClipBoard(event)} sx={{backgroundColor: copyButtonText == 'Copied!'? 'hsl(257, 27%, 26%) !important' : 'inherit'}} >{copyButtonText}</RegularButton>
                                                 
                                                 
-                                                <RegularButton sx={{backgroundColor:'tomato !important'}} onClick={onDeleteHandler}>Delete !</RegularButton>
+                                                {/* <RegularButton sx={{backgroundColor:'tomato !important'}} onClick={onDeleteHandler}>Delete !</RegularButton> */}
                                           </Stack>
 
                                     </StyledLinkContainer>
