@@ -113,16 +113,14 @@ const Feature = () => {
              }, [toggle, linksArr])
 
       const shortenLink = async () => {
+            let result;
 
             try {
 
                   let data = await fetch(`https://api.shrtco.de/v2/shorten?url=${link}`);
 
-                  let result = await data.json()
+                  result = await data.json()
 
-                  console.log(result)
-               
-      
                   let { short_link, full_short_link, short_link2, full_short_link2 } = result.result;
 
                   
@@ -133,7 +131,8 @@ const Feature = () => {
             }
 
             catch (error) {
-                  alert(error)
+                  alert(result.error)
+                  console.log(error)
             }
 
       }
@@ -160,17 +159,9 @@ const Feature = () => {
       const copyShortLinkToClipBoard = (event) => {
 
             let copiedLink = event.target.previousSibling.innerText;
-           
-            
+                       
             navigator.clipboard.writeText(copiedLink)
-
-            // if (event.target) {
-                  
-            //       setCopyButtonText('Copied!')
-                  
-            // }
-
-          
+  
             event.target.innerText = 'Copied!'
             event.target.style.backgroundColor = 'hsl(257, 27%, 26%)'
 
@@ -209,8 +200,6 @@ const Feature = () => {
 
             if (link) {
                   setEmptyLink(false)
-
-                  alert(emptyLink)
                   
                   shortenLink()
 
