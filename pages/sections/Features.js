@@ -77,7 +77,7 @@ const StyledLinkContainer = styled(Stack)(({ theme }) => ({
 
 const linksArr = [];
 let localStorageArray = [];
-let toggle = false;
+
 
 
 const Feature = () => {
@@ -110,7 +110,7 @@ const Feature = () => {
                   
             }
 
-             }, [toggle, linksArr])
+             })
 
       const shortenLink = async () => {
             let result;
