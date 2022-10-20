@@ -39,7 +39,7 @@ const Header = () => {
                         <Box>
                               <Typography variant='h1' component='h1' sx={{fontWeight:'700',[theme.breakpoints.down('md')]:{textAlign:"center", fontSize:"40px"}}}>More that just shorter links</Typography>
 
-                              <Typography variant='p' mb='1em' component={'p'} sx={{[theme.breakpoints.down('md')]:{textAlign:"center"}}}>Build your brand's recognition and get detailed insights on how your links are performing </Typography>
+                              <Typography variant='p' mb='1em' component={'p'} sx={{[theme.breakpoints.down('md')]:{textAlign:"center"}}}>Build your brands recognition and get detailed insights on how your links are performing </Typography>
 
                               <PrimaryButton sx={{[theme.breakpoints.down('md')]:{margin:'auto', display:'flex', width:"50vw"}}}>Get Started</PrimaryButton>
                         </Box>

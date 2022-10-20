@@ -67,18 +67,18 @@ const Main = () => {
                         <StyledBox>
                               <ImageContainer>
                                     
-                              <Image src={icon1} width='40px' height='40px' />
+                              <Image src={icon1} width='40px' height='40px' alt=' a brand icon' />
 
                               </ImageContainer>
                               <Typography mb='.5em' component={'h3'} variant='h3'>Brand Recognition</Typography>
-                              <Typography variant='p' component={'p'}>Boost your brand recognition with each click. Generic links don't mean a things. Branded links help instill confidence in your content</Typography>
+                              <Typography variant='p' component={'p'}>Boost your brand recognition with each click. Generic links dont mean a things. Branded links help instill confidence in your content</Typography>
 
                         </StyledBox>
 
                         <StyledBox>
                               <ImageContainer>
                                     
-                              <Image src={icon2} />
+                              <Image src={icon2} alt="record icon" />
 
                               </ImageContainer>
 
@@ -90,7 +90,7 @@ const Main = () => {
                         <StyledBox>
                               <ImageContainer>
                                     
-                              <Image src={icon3} width='40px' height={'40px'}/>
+                              <Image src={icon3} width='40px' height={'40px'} alt='tool icon'/>
 
                               </ImageContainer>
                               <Typography  mb='.5em' component={'h3'} variant='h3'>Fully Customizable</Typography>
