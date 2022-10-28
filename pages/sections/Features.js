@@ -87,30 +87,23 @@ const Feature = () => {
       const [shortenedLink, setShortenedLink] = useState('')
       const inputRef = useRef(null)
       const [emptyLink, setEmptyLink] = useState(false)
-      const [copyButtonText , setCopyButtonText] = useState('Copy')
-     
-
-
-
+      const [copyButtonText, setCopyButtonText] = useState('Copy')
+      const [deleteToggle , setDeleteToggle] = useState(false)
 
       if (typeof window !== 'undefined') {         
 
-
             localStorageArray = JSON.parse(localStorage.getItem("links Array"))
       }
-
-
 
       useEffect(() => {
             localStorageArray = JSON.parse(localStorage.getItem("links Array"));
             
             if (localStorageArray) {
                   
-            linksArr = localStorageArray;
-                  
+            linksArr = localStorageArray;                  
             }
 
-             })
+            })
 
       const shortenLink = async () => {
             let result;
@@ -145,9 +138,50 @@ const Feature = () => {
             if (result) {
 
                   setShortenedLink(result)
-              
 
+                  if (linksArr) {
+
+                        console.log(linksArr)
+
+                        let lastLinkObj = linksArr[linksArr.length - 1]
+
+                        console.log(lastLinkObj)
+
+                        if (lastLinkObj) {
+                              
+                              const { id } = lastLinkObj;
+                              
+
+                          console.log(lastLinkObj, id)
+
+                         linksArr.push({ link, result , id:id + 1 }) 
+                              
+                        }
+
+                        else {
+                              
+
+                        linksArr.push({ link, result , id:linksArr.length })
+                              
+                        }
+
+                        
+                        
+     
+
+                        
+                  }
+
+                  else {
+
+                        alert('I am evaluated')
+                        
                   linksArr.push({ link, result , id:linksArr.length })
+     
+                  }
+
+                  
+              
               
                   localStorage.setItem("links Array", JSON.stringify(linksArr))
                   
@@ -178,20 +212,21 @@ const Feature = () => {
 
       const onDeleteHandler = (event) => {
 
+            let linkIdString = event.target.parentNode.parentNode.id;
 
-            // console.log(event.target.parentNode.parentNode.firstChild.textContent)
+            let linkId = parseInt(linkIdString)  
 
-            let link = event.target.parentNode.parentNode.firstChild.textContent
-            
-            let index = localStorageArray.findIndex(items => items.link == link)
+            let localArray = JSON.parse(localStorage.getItem("links Array"))
 
-            console.log(index)
+            console.log(localArray)
 
-            let newArray = localStorageArray.filter(item => item.id != index)
+            let newArray = localArray.filter((item) => { return item.id != linkId })
+
+            console.log(newArray)
             
             localStorage.setItem("links Array", JSON.stringify(newArray))
 
-            setShortenedLink('')
+            setDeleteToggle(!deleteToggle)
       }
 
       const onClickHandler =  () => {
@@ -240,7 +275,7 @@ const Feature = () => {
                   {
                       localStorageArray  &&   localStorageArray.map(({link , result,id}) => {
                               return (
-                                    <StyledLinkContainer key={id} >
+                                    <StyledLinkContainer key={id} id={id} >
                                           
                                           <Typography>
                                                 { link }
@@ -253,7 +288,7 @@ const Feature = () => {
                                                 <RegularButton onClick={event => copyShortLinkToClipBoard(event)} sx={{backgroundColor: copyButtonText == 'Copied!'? 'hsl(257, 27%, 26%) !important' : 'inherit'}} >{copyButtonText}</RegularButton>
                                                 
                                                 
-                                                {/* <RegularButton sx={{backgroundColor:'tomato !important'}} onClick={onDeleteHandler}>Delete !</RegularButton> */}
+                                                <RegularButton sx={{backgroundColor:'tomato !important'}} onClick={onDeleteHandler}>Delete !</RegularButton>
                                           </Stack>
 
                                     </StyledLinkContainer>

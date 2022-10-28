@@ -22,7 +22,6 @@ const StyledHeader = styled(Stack)(({ theme }) => ({
             
       }
 
-    
       
      
 }))
