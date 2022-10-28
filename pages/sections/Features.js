@@ -165,16 +165,11 @@ const Feature = () => {
                               
                         }
 
-                        
-                        
-     
-
-                        
                   }
 
                   else {
 
-                        alert('I am evaluated')
+                        
                         
                   linksArr.push({ link, result , id:linksArr.length })
      
@@ -285,10 +280,10 @@ const Feature = () => {
                                                 
                                                 <Typography color={'cyan'} fontWeight='bold'>{ result}</Typography>
 
-                                                <RegularButton onClick={event => copyShortLinkToClipBoard(event)} sx={{backgroundColor: copyButtonText == 'Copied!'? 'hsl(257, 27%, 26%) !important' : 'inherit'}} >{copyButtonText}</RegularButton>
+                                                <RegularButton onClick={event => copyShortLinkToClipBoard(event)} sx={{backgroundColor: copyButtonText == 'Copied!'? 'hsl(257, 27%, 26%) !important' : 'inherit', [theme.breakpoints.down('md')]:{width:"100%"}}} >{copyButtonText}</RegularButton>
                                                 
                                                 
-                                                <RegularButton sx={{backgroundColor:'tomato !important'}} onClick={onDeleteHandler}>Delete !</RegularButton>
+                                                <RegularButton sx={{backgroundColor:'tomato !important', [theme.breakpoints.down('md')]:{width:"100%"}}} onClick={onDeleteHandler}>Delete !</RegularButton>
                                           </Stack>
 
                                     </StyledLinkContainer>
