@@ -4,14 +4,14 @@ import { Stack, Box, Typography , Link} from "@mui/material";
 
 import styled from "@emotion/styled";
 
-import { theme } from "../../theme";
+import { theme } from "../theme";
 
-import { StyledLink } from '../../component/Link';
+import { StyledLink } from '../component/Link';
 
-import fb from '../../images/facebook.svg'
-import ig from '../../images/instagram.svg'
-import pinterest from '../../images/pinterest.svg'
-import twitter from '../../images/twitter.svg'
+// import fb from '../../images/facebook.svg'
+// import ig from '../../images/instagram.svg'
+// import pinterest from '../../images/pinterest.svg'
+// import twitter from '../../images/twitter.svg'
 
 
 const StyledStack = styled(Stack)(({ theme }) => ({

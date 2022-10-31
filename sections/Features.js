@@ -3,13 +3,13 @@ import { useState, useRef , useEffect} from 'react'
 import { Stack, Box, Typography } from '@mui/material'
 import styled from '@emotion/styled';
 
-import bgm from '../../images/bgsm.svg'
+import bgm from '../images/bgsm.svg'
 
-import bgd from '../../images/bgsd.svg'
+import bgd from '../images/bgsd.svg'
 
-import { theme } from '../../theme';
+import { theme } from '../theme';
 
-import { RegularButton } from '../../component/Button';
+import { RegularButton } from '../component/Button'
 
 const StyledStack = styled(Stack)(({ theme }) => ({
       flexDirection: "row",

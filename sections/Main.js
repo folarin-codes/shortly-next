@@ -4,13 +4,14 @@ import { Box, Stack, Typography } from '@mui/material'
 
 import styled from '@emotion/styled'
 
-import { theme } from '../../theme'
+import { theme } from '../theme'
 
-import icon1 from '../../images/icon1.svg'
+import icon1 from '../images/icon1.svg'
 
-import icon2 from '../../images/icon2.svg'
 
-import icon3 from '../../images/icon3.svg'
+import icon2 from '../images/icon2.svg'
+
+import icon3 from '../images/icon3.svg'
 
 const StyledStack = styled(Stack)(({theme}) => ({
 
@@ -22,9 +23,7 @@ const StyledStack = styled(Stack)(({theme}) => ({
             flexDirection:"column"
             
       }
-      
-
-      
+  
 }))
 
 const StyledBox = styled(Box)(({ theme }) => ({

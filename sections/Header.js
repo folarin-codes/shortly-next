@@ -4,11 +4,11 @@ import { Stack, Box, Typography } from '@mui/material'
 
 import styled from '@emotion/styled'
 
-import { PrimaryButton } from '../../component/Button'
+import { PrimaryButton } from '../component/Button'
 
-import {theme} from '../../theme'
+import {theme} from '../theme'
 
-import image from '../../images/illustration-working.svg'
+import image from '../images/illustration-working.svg'
 
 const StyledHeader = styled(Stack)(({ theme }) => ({
 

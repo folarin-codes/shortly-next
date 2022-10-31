@@ -23,7 +23,9 @@ const MobileLink = styled(Link)({
 
       color: "white !important",
       fontSize: '18px', 
-      fontWeight:'500'
+      fontWeight: '500',
+      transition:'all ease 0.2s'
+      
        
 
 })

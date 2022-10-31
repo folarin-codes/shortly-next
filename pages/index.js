@@ -4,11 +4,12 @@ import { ThemeProvider } from '@mui/material'
 
 import Navigation from '../component/Navigation'
 import { MobileNavigation } from '../component/Navigation'
-import Header from './sections/Header'
-import Main from './sections/Main'
-import Feature from './sections/Features'
-import CTA from './sections/Cta'
-import Footer from './sections/Footer'
+// import Header from './sections/Header'
+import Header from '../sections/Header'
+import Main from '../sections/Main'
+import Feature from '../sections/Features'
+import CTA from '../sections/Cta'
+import Footer from '../sections/Footer'
 
 import { theme } from '../theme'
 

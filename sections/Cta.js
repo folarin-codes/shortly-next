@@ -5,11 +5,11 @@ import { PrimaryButton } from '../../component/Button'
 
 import styled from '@emotion/styled'
 
-import { theme } from '../../theme' 
+import { theme } from '../theme' 
 
-import bgDesktop from '../../images/bgd.svg'
+import bgDesktop from '../images/bgd.svg'
 
-import bgMobile from '../../images/bgm.svg'
+import bgMobile from '../images/bgm.svg'
 
 
 const StyledBox = styled(Box)(({ theme }) => ({
