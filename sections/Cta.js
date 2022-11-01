@@ -1,7 +1,7 @@
 
 import { Box, Typography } from '@mui/material'
 
-import { PrimaryButton } from '../../component/Button'
+import { PrimaryButton } from '../component/Button'
 
 import styled from '@emotion/styled'
 
