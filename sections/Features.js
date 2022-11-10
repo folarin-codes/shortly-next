@@ -1,6 +1,6 @@
 import { useState, useRef , useEffect} from 'react'
 
-import { Stack, Box, Typography } from '@mui/material'
+import { Stack, Box, Typography, Modal, Button } from '@mui/material'
 import styled from '@emotion/styled';
 
 import bgm from '../images/bgsm.svg'
@@ -88,7 +88,11 @@ const Feature = () => {
       const inputRef = useRef(null)
       const [emptyLink, setEmptyLink] = useState(false)
       const [copyButtonText, setCopyButtonText] = useState('Copy')
-      const [deleteToggle , setDeleteToggle] = useState(false)
+      const [deleteToggle, setDeleteToggle] = useState(false)
+      const [errorMessage, setErrorMessage] = useState('There was something wrong with your network connection , kindly try again')
+      const [modalOpen , setModalOpen] = useState(false)
+
+      const [isError, setIsError] = useState(false)
 
       if (typeof window !== 'undefined') {         
 
@@ -124,8 +128,24 @@ const Feature = () => {
             }
 
             catch (error) {
-                  alert(result.error)
-                  console.log(error)
+
+                  setIsError(true)
+                  setModalOpen(true)
+
+                  if (result) {
+
+                        // console.log(result)
+                        
+                        
+                        setErrorMessage(result.error || errorMessage)
+                        
+                  }
+
+                  else {
+
+                        setErrorMessage(errorMessage)
+                  }
+                  // console.log(error)
             }
 
       }
@@ -174,9 +194,6 @@ const Feature = () => {
                   linksArr.push({ link, result , id:linksArr.length })
      
                   }
-
-                  
-              
               
                   localStorage.setItem("links Array", JSON.stringify(linksArr))
                   
@@ -224,7 +241,7 @@ const Feature = () => {
             setDeleteToggle(!deleteToggle)
       }
 
-      const onClickHandler =  () => {
+      const onShortenLinkClickHandler =  () => {
 
             inputRef.current.value = ''
 
@@ -248,19 +265,23 @@ const Feature = () => {
             }
       }
 
+      const handleModalClose = () => {
+            setModalOpen(false)
+      }
+
       return (
            
             <StyledBox>
                   
                   <StyledStack>
-                        <StyledInput type={'text'} placeholder='Shorten a link address' onChange={(e) => { setLink(e.currentTarget.value); }} ref={inputRef}
+                        <StyledInput type={'text'} placeholder='Shorten a link address' onChange={(e) => { setLink(e.currentTarget.value.toLowerCase()); }} ref={inputRef}
                         style={{border:emptyLink ? '1px solid red' : 'none' , color:emptyLink ? 'red' : 'initial'}}
 
                         />
 
                         <Typography sx={{position:'absolute', top:"6em", color:'red', fontWeight:"100", fontStyle:'italic', display:emptyLink ? 'block' : 'none', [theme.breakpoints.down('md')]:{top:'4.5em'}}}>Please add a link</Typography>
 
-                        <RegularButton onClick={onClickHandler}>Shorten it!</RegularButton>
+                        <RegularButton onClick={onShortenLinkClickHandler}>Shorten it!</RegularButton>
                         
                   
 
@@ -290,7 +311,32 @@ const Feature = () => {
                               )
                         })
                         }
-                        </Box>
+                  </Box>
+                  
+                  <Modal open={modalOpen} onClose={handleModalClose}>
+                        <Stack sx={{ width: '60vw', display: 'flex', margin: '35vh auto', backgroundColor: "white", borderRadius: '5px', height: "25vh", flexDirection: 'column', position: "relative"}}>
+                              
+                              <Box sx={{backgroundColor:"tomato", padding:'.5em 1em'}}>
+                                    
+                              <Typography sx={{color:'white'}}>Error!!!</Typography>
+
+                              </Box>
+
+                              <Box sx={{padding: "2em" }}>
+                                    
+                              <Typography sx={{color:"tomato"}}>{errorMessage}</Typography>
+
+                              </Box>
+
+                              <Button onClick={handleModalClose} variant='primary' sx={{
+                                    backgroundColor: "hsl(257, 27%, 26%)", width: '5em', position: "absolute", right:'3em', bottom:'.5em' , color:'white'
+                              }}>ok</Button>
+
+
+                              
+                              
+                       </Stack>
+                  </Modal>
 
                   </StyledBox>
             
